@@ -1,4 +1,4 @@
-﻿namespace BoligDataAPI.Features.Data;
+﻿namespace BoligDataAPI.Features.Database;
 
 public record DataFakerConfiguration
 {

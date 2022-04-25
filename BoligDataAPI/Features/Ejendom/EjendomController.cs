@@ -1,38 +1,41 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BoligDataAPI.Features.Header;
+using Mapster;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BoligDataAPI.Features.Ejendom;
 
 [ApiController]
 [Route("[controller]")]
 [Produces("application/json")]
+[ProducesResponseType(StatusCodes.Status200OK)]
+[ProducesResponseType(StatusCodes.Status409Conflict)]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 public class EjendomController : ControllerBase
 {
-  private readonly EjendomService _ejendomService;
+  private readonly EjendomService.Factory _ejendomServiceFactory;
 
-  public EjendomController(EjendomService ejendomService)
+  public EjendomController(EjendomService.Factory ejendomServiceFactory)
   {
-    _ejendomService = ejendomService;
+    _ejendomServiceFactory = ejendomServiceFactory;
   }
 
   [HttpGet("/Ejendom/{id:guid}")]
-  [ProducesResponseType(StatusCodes.Status200OK)]
-  [ProducesResponseType(StatusCodes.Status409Conflict)]
-  public ActionResult<Ejendom?> Get(Guid id)
+  public ActionResult<Response?> Get(Guid id)
   {
-    var result = _ejendomService.GetById(id);
+    var apiKey = Request.Headers.ExtractApiKey();
+    var result = _ejendomServiceFactory(apiKey).GetById(id);
     return result.IsFailed
       ? Conflict(result.ToString())
-      : Ok(result.Value);
+      : Ok(result.Value.Adapt<Response>());
   }
 
   [HttpGet("/Ejendom")]
-  [ProducesResponseType(StatusCodes.Status200OK)]
-  [ProducesResponseType(StatusCodes.Status409Conflict)]
-  public ActionResult<IEnumerable<Ejendom>> List()
+  public ActionResult<IEnumerable<Response>> List()
   {
-    var result = _ejendomService.GetAll();
+    var apiKey = Request.Headers.ExtractApiKey();
+    var result = _ejendomServiceFactory(apiKey).GetAll();
     return result.IsFailed
       ? Conflict(result.ToString())
-      : Ok(result.Value);
+      : Ok(result.Value.Adapt<IEnumerable<Response>>());
   }
 }

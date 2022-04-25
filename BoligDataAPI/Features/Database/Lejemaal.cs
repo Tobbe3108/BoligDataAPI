@@ -1,4 +1,4 @@
-﻿namespace BoligDataAPI.Features.Lejemaal;
+﻿namespace BoligDataAPI.Features.Database;
 
 public record Lejemaal(Guid EjendomId,
   string StreetName,
@@ -8,7 +8,4 @@ public record Lejemaal(Guid EjendomId,
   string City,
   string State,
   string CountryCode,
-  bool IsBookable)
-{
-  public Guid Id { get; init; } = Guid.NewGuid();
-}
+  bool IsBookable) : ModelBase;

@@ -1,23 +1,28 @@
-﻿using FluentResults;
+﻿using BoligDataAPI.Features.Database;
+using FluentResults;
 
 namespace BoligDataAPI.Features.Ejendom;
 
 public class EjendomService
 {
-  private readonly List<Ejendom> _data;
+  private readonly DataContext _context;
+  private readonly string _apiKey;
 
-  public EjendomService(List<Ejendom> data)
+  public delegate EjendomService Factory(string apiKey);
+
+  public EjendomService(DataContext context, string apiKey)
   {
-    _data = data;
+    _context = context;
+    _apiKey = apiKey;
   }
 
-  public Result<Ejendom> GetById(Guid id)
+  public Result<Database.Ejendom> GetById(Guid id)
   {
-    var result = _data.FirstOrDefault(x => x.Id == id);
+    var result = _context.Ejendomme.Where(x => x.ApiKey == _apiKey).FirstOrDefault(x => x.Id == id);
     return result is null
-      ? Result.Fail<Ejendom>($"No Ejendom found with id: {id}")
+      ? Result.Fail<Database.Ejendom>($"No Ejendom found with id: {id}")
       : Result.Ok(result);
   }
 
-  public Result<List<Ejendom>> GetAll() => Result.Ok(_data);
+  public Result<IEnumerable<Database.Ejendom>> GetAll() => Result.Ok(_context.Ejendomme.Where(x => x.ApiKey == _apiKey).AsEnumerable());
 }

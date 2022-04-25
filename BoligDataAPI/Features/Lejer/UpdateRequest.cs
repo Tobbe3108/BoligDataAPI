@@ -1,4 +1,4 @@
-namespace BoligDataAPI.Features.Lejer.Requests;
+namespace BoligDataAPI.Features.Lejer;
 
 public record UpdateRequest(string FirstName,
   string MiddleName,

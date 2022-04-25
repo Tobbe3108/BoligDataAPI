@@ -1,38 +1,41 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BoligDataAPI.Features.Header;
+using Mapster;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BoligDataAPI.Features.Lejemaal;
 
 [ApiController]
 [Route("[controller]")]
 [Produces("application/json")]
+[ProducesResponseType(StatusCodes.Status200OK)]
+[ProducesResponseType(StatusCodes.Status409Conflict)]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 public class LejemaalController : ControllerBase
 {
-  private readonly LejemaalService _lejemaalService;
+  private readonly LejemaalService.Factory _lejemaalServiceFactory;
 
-  public LejemaalController(LejemaalService lejemaalService)
+  public LejemaalController(LejemaalService.Factory lejemaalServiceFactory)
   {
-    _lejemaalService = lejemaalService;
+    _lejemaalServiceFactory = lejemaalServiceFactory;
   }
 
   [HttpGet("/Lejemaal/{id:guid}")]
-  [ProducesResponseType(StatusCodes.Status200OK)]
-  [ProducesResponseType(StatusCodes.Status409Conflict)]
-  public ActionResult<Lejemaal?> Get(Guid id)
+  public ActionResult<Response?> Get(Guid id)
   {
-    var result = _lejemaalService.GetById(id);
+    var apiKey = Request.Headers.ExtractApiKey();
+    var result = _lejemaalServiceFactory(apiKey).GetById(id);
     return result.IsFailed
       ? Conflict(result.ToString())
-      : Ok(result.Value);
+      : Ok(result.Value.Adapt<Response>());
   }
 
   [HttpGet("/Ejendom/{id:guid}/Lejemaal")]
-  [ProducesResponseType(StatusCodes.Status200OK)]
-  [ProducesResponseType(StatusCodes.Status409Conflict)]
-  public ActionResult<IEnumerable<Lejemaal>> GetByEjendomId(Guid id)
+  public ActionResult<IEnumerable<Response>> GetByEjendomId(Guid id)
   {
-    var result = _lejemaalService.GetByEjendomId(id);
+    var apiKey = Request.Headers.ExtractApiKey();
+    var result = _lejemaalServiceFactory(apiKey).GetByEjendomId(id);
     return result.IsFailed
       ? Conflict(result.ToString())
-      : Ok(result.Value);
+      : Ok(result.Value.Adapt<IEnumerable<Response>>());
   }
 }

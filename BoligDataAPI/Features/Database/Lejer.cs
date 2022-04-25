@@ -1,9 +1,8 @@
-﻿namespace BoligDataAPI.Features.Lejer;
+﻿namespace BoligDataAPI.Features.Database;
 
-public record Lejer
+public record Lejer : ModelBase
 {
   //TODO Indflyt og freflyt dato
-  public Guid Id { get; init; } = Guid.NewGuid();
   public Guid LejemaalId { get; init; }
   public string FirstName { get; init; }
   public string MiddleName { get; init; }

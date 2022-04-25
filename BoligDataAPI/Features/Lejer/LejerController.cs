@@ -1,4 +1,4 @@
-﻿using BoligDataAPI.Features.Lejer.Requests;
+﻿using BoligDataAPI.Features.Header;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,65 +7,63 @@ namespace BoligDataAPI.Features.Lejer;
 [ApiController]
 [Route("[controller]")]
 [Produces("application/json")]
+[ProducesResponseType(StatusCodes.Status200OK)]
+[ProducesResponseType(StatusCodes.Status409Conflict)]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 public class LejerController : ControllerBase
 {
-  private readonly LejerService _lejerService;
+  private readonly LejerService.Factory _lejerServiceFactory;
 
-  public LejerController(LejerService lejerService)
+  public LejerController(LejerService.Factory lejerServiceFactory)
   {
-    _lejerService = lejerService;
+    _lejerServiceFactory = lejerServiceFactory;
   }
 
   [HttpGet("/Lejer/{id:guid}")]
-  [ProducesResponseType(StatusCodes.Status200OK)]
-  [ProducesResponseType(StatusCodes.Status409Conflict)]
-  public ActionResult<Lejer?> Get(Guid id)
+  public ActionResult<Response?> Get(Guid id)
   {
-    var result = _lejerService.GetById(id);
+    var apiKey = Request.Headers.ExtractApiKey();
+    var result = _lejerServiceFactory(apiKey).GetById(id);
     return result.IsFailed
       ? Conflict(result.ToString())
-      : Ok(result.Value);
+      : Ok(result.Value.Adapt<Response>());
   }
 
   [HttpGet("/Lejemaal/{id:guid}/Lejer")]
-  [ProducesResponseType(StatusCodes.Status200OK)]
-  [ProducesResponseType(StatusCodes.Status409Conflict)]
-  public ActionResult<IEnumerable<Lejer>> GetByLejemaalId(Guid id)
+  public ActionResult<IEnumerable<Response>> GetByLejemaalId(Guid id)
   {
-    var result = _lejerService.GetByLejemaalId(id);
+    var apiKey = Request.Headers.ExtractApiKey();
+    var result = _lejerServiceFactory(apiKey).GetByLejemaalId(id);
     return result.IsFailed
       ? Conflict(result.ToString())
-      : Ok(result.Value);
+      : Ok(result.Value.Adapt<IEnumerable<Response>>());
   }
-  
+
   [HttpPost("/Lejer")]
-  [ProducesResponseType(StatusCodes.Status200OK)]
-  [ProducesResponseType(StatusCodes.Status409Conflict)]
-  public ActionResult Create([FromBody] CreateRequest data)
+  public ActionResult<Response> Create([FromBody] CreateRequest data)
   {
-    var result = _lejerService.Create(data.Adapt<Lejer>());
+    var apiKey = Request.Headers.ExtractApiKey();
+    var result = _lejerServiceFactory(apiKey).Create(data.Adapt<Database.Lejer>() with { ApiKey = apiKey });
     return result.IsFailed
       ? Conflict(result.ToString())
-      : Ok(result.Value);
+      : Ok(result.Value.Adapt<Response>());
   }
-  
+
   [HttpPut("/Lejer/{id:guid}")]
-  [ProducesResponseType(StatusCodes.Status200OK)]
-  [ProducesResponseType(StatusCodes.Status409Conflict)]
-  public ActionResult Update(Guid id, [FromBody] UpdateRequest data)
+  public ActionResult<Response> Update(Guid id, [FromBody] UpdateRequest data)
   {
-    var result = _lejerService.Update(data.Adapt<Lejer>() with { Id = id });
+    var apiKey = Request.Headers.ExtractApiKey();
+    var result = _lejerServiceFactory(apiKey).Update(data.Adapt<Database.Lejer>() with { Id = id, ApiKey = apiKey });
     return result.IsFailed
       ? Conflict(result.ToString())
-      : Ok(result.Value);
+      : Ok(result.Value.Adapt<Response>());
   }
-  
+
   [HttpDelete("/Lejer/{id:guid}")]
-  [ProducesResponseType(StatusCodes.Status200OK)]
-  [ProducesResponseType(StatusCodes.Status409Conflict)]
   public ActionResult Delete(Guid id)
   {
-    var result = _lejerService.Delete(id);
+    var apiKey = Request.Headers.ExtractApiKey();
+    var result = _lejerServiceFactory(apiKey).Delete(id);
     return result.IsFailed
       ? Conflict(result.ToString())
       : Ok();

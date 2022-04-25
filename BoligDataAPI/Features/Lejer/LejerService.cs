@@ -1,53 +1,59 @@
-﻿using FluentResults;
+﻿using BoligDataAPI.Features.Database;
+using FluentResults;
 
 namespace BoligDataAPI.Features.Lejer;
 
 public class LejerService
 {
-  private readonly List<Lejer> _data;
+  private readonly DataContext _context;
+  private readonly string _apiKey;
 
-  public LejerService(List<Lejer> data)
+  public delegate LejerService Factory(string apiKey);
+  public LejerService(DataContext context, string apiKey)
   {
-    _data = data;
+    _context = context;
+    _apiKey = apiKey;
   }
 
-  public Result<Lejer> GetById(Guid id)
+  public Result<Database.Lejer> GetById(Guid id)
   {
-    var result = _data.FirstOrDefault(x => x.Id == id);
+    var result = _context.Lejere.Where(x => x.ApiKey == _apiKey).FirstOrDefault(x => x.Id == id);
     return result is null
-      ? Result.Fail<Lejer>($"No Lejer found with id: {id}")
+      ? Result.Fail<Database.Lejer>($"No Lejer found with id: {id}")
       : Result.Ok(result);
   }
 
-  public Result<List<Lejer>> GetByLejemaalId(Guid id)
+  public Result<List<Database.Lejer>> GetByLejemaalId(Guid id)
   {
-    var result = _data.Where(x => x.LejemaalId == id).ToList();
+    var result = _context.Lejere.Where(x => x.ApiKey == _apiKey).Where(x => x.LejemaalId == id).ToList();
     return result.Any() is false
-      ? Result.Fail<List<Lejer>>($"No Lejer found on Lejemaal with id: {id}")
+      ? Result.Fail<List<Database.Lejer>>($"No Lejer found on Lejemaal with id: {id}")
       : Result.Ok(result);
   }
 
-  public Result<Lejer> Create(Lejer data)
+  public Result<Database.Lejer> Create(Database.Lejer data)
   {
     var result = GetById(data.Id);
     return result.IsSuccess
       ? result.ToResult()
       : Result.Try(() =>
       {
-        _data.Add(data);
+        _context.Lejere.Add(data);
+        _context.SaveChanges();
         return data;
       });
   }
 
-  public Result<Lejer> Update(Lejer data)
+  public Result<Database.Lejer> Update(Database.Lejer data)
   {
     var result = GetById(data.Id);
     return result.IsFailed
       ? result.ToResult()
       : Result.Try(() =>
       {
-        _data.Remove(result.Value);
-        _data.Add(data with { LejemaalId = result.Value.LejemaalId });
+        _context.Lejere.Remove(result.Value);
+        _context.Lejere.Add(data with { LejemaalId = result.Value.LejemaalId });
+        _context.SaveChanges();
         return data;
       });
   }
@@ -59,8 +65,8 @@ public class LejerService
       ? result.ToResult()
       : Result.Try(() =>
       {
-        _data.Remove(result.Value);
-        ;
+        _context.Lejere.Remove(result.Value);
+        _context.SaveChanges();
       });
   }
 }
