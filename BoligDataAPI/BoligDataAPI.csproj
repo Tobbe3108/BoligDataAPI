@@ -7,6 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="FluentResults" Version="3.5.0" />
+        <PackageReference Include="Mapster" Version="7.3.0" />
         <PackageReference Include="RimuTec.Faker" Version="1.11.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
