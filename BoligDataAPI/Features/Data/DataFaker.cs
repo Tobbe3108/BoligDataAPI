@@ -55,8 +55,7 @@ public class DataFaker
               MiddleName = RimuTec.Faker.Name.MiddleName(),
               LastName = RimuTec.Faker.Name.LastName(),
               Email = RimuTec.Faker.Internet.Email(),
-              CellPhone = RimuTec.Faker.PhoneNumber.CellPhone(),
-              LandLine = RimuTec.Faker.PhoneNumber.LandLine(),
+              PhoneNumber = RimuTec.Faker.PhoneNumber.CellPhone(),
               MoveOutDate = lastDate,
               MoveInDate = nextDate
             };

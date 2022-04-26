@@ -4,7 +4,6 @@ public record UpdateRequest(string FirstName,
   string MiddleName,
   string LastName,
   string Email,
-  string CellPhone,
-  string LandLine,
+  string PhoneNumber,
   DateTime MoveInDate,
   DateTime? MoveOutDate);

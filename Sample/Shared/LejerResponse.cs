@@ -1,6 +1,7 @@
-namespace BoligDataAPI.Features.Lejer;
+﻿namespace Sample.Shared;
 
-public record CreateRequest(Guid LejemaalId,
+public record LejerResponse(Guid Id,
+  Guid LejemaalId,
   string FirstName,
   string MiddleName,
   string LastName,

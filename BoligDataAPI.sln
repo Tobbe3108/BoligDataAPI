@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoligDataAPI", "BoligDataAPI\BoligDataAPI.csproj", "{BC28A32B-8C2B-4FE4-B571-6BED8BEE372A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{AAC3765D-EE7D-4709-98E4-8411A1A52473}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{19E64598-2994-4B2A-A58E-E4E75B6E9918}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,5 +14,11 @@ Global
 		{BC28A32B-8C2B-4FE4-B571-6BED8BEE372A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC28A32B-8C2B-4FE4-B571-6BED8BEE372A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC28A32B-8C2B-4FE4-B571-6BED8BEE372A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19E64598-2994-4B2A-A58E-E4E75B6E9918}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19E64598-2994-4B2A-A58E-E4E75B6E9918}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19E64598-2994-4B2A-A58E-E4E75B6E9918}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19E64598-2994-4B2A-A58E-E4E75B6E9918}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 EndGlobal

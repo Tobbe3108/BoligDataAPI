@@ -7,8 +7,7 @@ public record Lejer : ModelBase
   public string MiddleName { get; init; }
   public string LastName { get; init; }
   public string Email { get; init; }
-  public string CellPhone { get; init; }
-  public string LandLine { get; init; }
+  public string PhoneNumber { get; init; }
   public DateTime MoveInDate { get; init; }
   public DateTime? MoveOutDate { get; init; }
 }
