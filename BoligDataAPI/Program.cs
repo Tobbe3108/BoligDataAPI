@@ -1,6 +1,7 @@
 using AspNetCore.Authentication.ApiKey;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using BoligDataAPI.Features.Data;
 using BoligDataAPI.Features.Database;
 using BoligDataAPI.Features.Ejendom;
 using BoligDataAPI.Features.Lejemaal;

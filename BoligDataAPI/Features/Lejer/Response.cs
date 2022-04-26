@@ -7,4 +7,6 @@ public record Response(Guid Id,
   string LastName,
   string Email,
   string CellPhone,
-  string LandLine);
+  string LandLine,
+  DateTime MoveInDate,
+  DateTime? MoveOutDate);

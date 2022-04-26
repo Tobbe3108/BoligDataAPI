@@ -6,4 +6,6 @@ public record CreateRequest(Guid LejemaalId,
   string LastName,
   string Email,
   string CellPhone,
-  string LandLine);
+  string LandLine,
+  DateTime MoveInDate,
+  DateTime? MoveOutDate);

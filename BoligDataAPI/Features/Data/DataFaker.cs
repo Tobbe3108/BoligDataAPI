@@ -1,4 +1,6 @@
-﻿namespace BoligDataAPI.Features.Database;
+﻿using BoligDataAPI.Features.Database;
+
+namespace BoligDataAPI.Features.Data;
 
 public class DataFaker
 {
@@ -21,7 +23,7 @@ public class DataFaker
     {
       for (var i = 0; i < _dataFakerConfiguration.NrOfEjendomme; i++)
       {
-        var ejendom = new Ejendom(RimuTec.Faker.Address.StreetName(),
+        var ejendom = new Database.Ejendom(RimuTec.Faker.Address.StreetName(),
           RimuTec.Faker.Address.BuildingNumber(),
           RimuTec.Faker.Address.Postcode(),
           RimuTec.Faker.Address.City(),
@@ -30,7 +32,7 @@ public class DataFaker
 
         for (var j = 0; j < GetRandomFromRange(_dataFakerConfiguration.RangeOfLejemaalPrEjendom); j++)
         {
-          var lejemaal = new Lejemaal(ejendom.Id,
+          var lejemaal = new Database.Lejemaal(ejendom.Id,
             ejendom.StreetName,
             ejendom.BuildingNumber,
             RimuTec.Faker.Address.SecondaryAddress(),
@@ -40,9 +42,13 @@ public class DataFaker
             ejendom.CountryCode,
             Random.Shared.Next(100) < 10 /*10% chance of being bookable*/);
 
-          for (var h = 0; h < GetRandomFromRange(_dataFakerConfiguration.RangeOfLejerePrLejemaal); h++)
+          var lejerePrLejemaal = GetRandomFromRange(_dataFakerConfiguration.RangeOfLejerePrLejemaal);
+          var lastDate = RimuTec.Faker.Date.Backward(3650);
+          for (var h = 0; h < lejerePrLejemaal; h++)
           {
-            var lejer = new Lejer
+            var nextDate = RimuTec.Faker.Date.Between(lastDate, lastDate.AddYears(2));
+            
+            var lejer = new Database.Lejer
             {
               LejemaalId = lejemaal.Id,
               FirstName = RimuTec.Faker.Name.FirstName(),
@@ -50,8 +56,11 @@ public class DataFaker
               LastName = RimuTec.Faker.Name.LastName(),
               Email = RimuTec.Faker.Internet.Email(),
               CellPhone = RimuTec.Faker.PhoneNumber.CellPhone(),
-              LandLine = RimuTec.Faker.PhoneNumber.LandLine()
+              LandLine = RimuTec.Faker.PhoneNumber.LandLine(),
+              MoveOutDate = lastDate,
+              MoveInDate = nextDate
             };
+            lastDate = nextDate;
 
             lejer.ApiKey = apiKey;
             _context.Lejere.Add(lejer);
