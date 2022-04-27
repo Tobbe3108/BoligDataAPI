@@ -15,23 +15,23 @@ public class LejerService
     _apiKey = apiKey;
   }
 
-  public Result<Database.Lejer> GetById(Guid id)
+  public Result<Lejer> GetById(Guid id)
   {
     var result = _context.Lejere.Where(x => x.ApiKey == _apiKey).FirstOrDefault(x => x.Id == id);
     return result is null
-      ? Result.Fail<Database.Lejer>($"No Lejer found with id: {id}")
+      ? Result.Fail<Lejer>($"No Lejer found with id: {id}")
       : Result.Ok(result);
   }
 
-  public Result<List<Database.Lejer>> GetByLejemaalId(Guid id)
+  public Result<List<Lejer>> GetByLejemaalId(Guid id)
   {
     var result = _context.Lejere.Where(x => x.ApiKey == _apiKey).Where(x => x.LejemaalId == id).ToList();
     return result.Any() is false
-      ? Result.Fail<List<Database.Lejer>>($"No Lejer found on Lejemaal with id: {id}")
+      ? Result.Fail<List<Lejer>>($"No Lejer found on Lejemaal with id: {id}")
       : Result.Ok(result);
   }
 
-  public Result<Database.Lejer> Create(Database.Lejer data)
+  public Result<Lejer> Create(Lejer data)
   {
     var result = GetById(data.Id);
     return result.IsSuccess
@@ -44,7 +44,7 @@ public class LejerService
       });
   }
 
-  public Result<Database.Lejer> Update(Database.Lejer data)
+  public Result<Lejer> Update(Lejer data)
   {
     var result = GetById(data.Id);
     return result.IsFailed

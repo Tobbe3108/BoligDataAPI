@@ -1,4 +1,6 @@
-﻿namespace BoligDataAPI.Features.Database;
+﻿using BoligDataAPI.Features.Database;
+
+namespace BoligDataAPI.Features.Lejemaal;
 
 public record Lejemaal(Guid EjendomId,
   string StreetName,

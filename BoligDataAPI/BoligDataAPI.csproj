@@ -17,4 +17,22 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Features\Ejendom\Response.cs">
+        <DependentUpon>EjendomController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Features\Lejemaal\Response.cs">
+        <DependentUpon>LejemaalController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Features\Lejer\CreateRequest.cs">
+        <DependentUpon>LejerController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Features\Lejer\UpdateRequest.cs">
+        <DependentUpon>LejerController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Features\Lejer\Response.cs">
+        <DependentUpon>LejerController.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>

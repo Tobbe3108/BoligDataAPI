@@ -16,13 +16,13 @@ public class EjendomService
     _apiKey = apiKey;
   }
 
-  public Result<Database.Ejendom> GetById(Guid id)
+  public Result<Ejendom> GetById(Guid id)
   {
     var result = _context.Ejendomme.Where(x => x.ApiKey == _apiKey).FirstOrDefault(x => x.Id == id);
     return result is null
-      ? Result.Fail<Database.Ejendom>($"No Ejendom found with id: {id}")
+      ? Result.Fail<Ejendom>($"No Ejendom found with id: {id}")
       : Result.Ok(result);
   }
 
-  public Result<IEnumerable<Database.Ejendom>> GetAll() => Result.Ok(_context.Ejendomme.Where(x => x.ApiKey == _apiKey).AsEnumerable());
+  public Result<IEnumerable<Ejendom>> GetAll() => Result.Ok(_context.Ejendomme.Where(x => x.ApiKey == _apiKey).AsEnumerable());
 }

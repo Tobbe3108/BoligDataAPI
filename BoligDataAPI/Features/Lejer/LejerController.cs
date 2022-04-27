@@ -43,7 +43,7 @@ public class LejerController : ControllerBase
   public ActionResult<Response> Create([FromBody] CreateRequest data)
   {
     var apiKey = Request.Headers.ExtractApiKey();
-    var result = _lejerServiceFactory(apiKey).Create(data.Adapt<Database.Lejer>() with { ApiKey = apiKey });
+    var result = _lejerServiceFactory(apiKey).Create(data.Adapt<Lejer>() with { ApiKey = apiKey });
     return result.IsFailed
       ? Conflict(result.ToString())
       : Ok(result.Value.Adapt<Response>());
@@ -53,7 +53,7 @@ public class LejerController : ControllerBase
   public ActionResult<Response> Update(Guid id, [FromBody] UpdateRequest data)
   {
     var apiKey = Request.Headers.ExtractApiKey();
-    var result = _lejerServiceFactory(apiKey).Update(data.Adapt<Database.Lejer>() with { Id = id, ApiKey = apiKey });
+    var result = _lejerServiceFactory(apiKey).Update(data.Adapt<Lejer>() with { Id = id, ApiKey = apiKey });
     return result.IsFailed
       ? Conflict(result.ToString())
       : Ok(result.Value.Adapt<Response>());

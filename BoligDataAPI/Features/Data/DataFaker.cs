@@ -23,7 +23,7 @@ public class DataFaker
     {
       for (var i = 0; i < _dataFakerConfiguration.NrOfEjendomme; i++)
       {
-        var ejendom = new Database.Ejendom(RimuTec.Faker.Address.StreetName(),
+        var ejendom = new Ejendom.Ejendom(RimuTec.Faker.Address.StreetName(),
           RimuTec.Faker.Address.BuildingNumber(),
           RimuTec.Faker.Address.Postcode(),
           RimuTec.Faker.Address.City(),
@@ -32,7 +32,7 @@ public class DataFaker
 
         for (var j = 0; j < GetRandomFromRange(_dataFakerConfiguration.RangeOfLejemaalPrEjendom); j++)
         {
-          var lejemaal = new Database.Lejemaal(ejendom.Id,
+          var lejemaal = new Lejemaal.Lejemaal(ejendom.Id,
             ejendom.StreetName,
             ejendom.BuildingNumber,
             RimuTec.Faker.Address.SecondaryAddress(),
@@ -48,7 +48,7 @@ public class DataFaker
           {
             var nextDate = RimuTec.Faker.Date.Between(lastDate, lastDate.AddYears(2));
             
-            var lejer = new Database.Lejer
+            var lejer = new Lejer.Lejer
             {
               LejemaalId = lejemaal.Id,
               FirstName = RimuTec.Faker.Name.FirstName(),

@@ -1,4 +1,6 @@
-﻿namespace BoligDataAPI.Features.Database;
+﻿using BoligDataAPI.Features.Database;
+
+namespace BoligDataAPI.Features.Lejer;
 
 public record Lejer : ModelBase
 {
