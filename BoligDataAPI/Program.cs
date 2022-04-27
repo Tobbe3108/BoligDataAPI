@@ -25,9 +25,10 @@ builder.Services.AddDbContext<DataContext>(options => options.UseInMemoryDatabas
 
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
-  containerBuilder.RegisterType<EjendomService>();
-  containerBuilder.RegisterType<LejemaalService>();
-  containerBuilder.RegisterType<LejerService>();
+  containerBuilder.RegisterType<EjendomService>().As<IEjendomService>();
+  containerBuilder.RegisterType<LejemaalService>().As<ILejemaalService>();
+  containerBuilder.RegisterType<LejerService>().As<ILejerService>();
+  containerBuilder.RegisterType<DataFaker>().As<IDataFaker>();
 });
 
 builder.Services.AddSwaggerGen(options =>
@@ -69,11 +70,10 @@ builder.Services.AddAuthorization(options =>
 
 var app = builder.Build();
 
-using var context = app.Services.GetRequiredService<DataContext>();
 var dataFakerConfiguration = builder.Configuration.GetSection("Faker").Get<DataFakerConfiguration>();
 var apiKeys = builder.Configuration.GetSection("ApiKeys").Get<IEnumerable<string>>();
-var faker = new DataFaker(dataFakerConfiguration, apiKeys, context);
-faker.GenerateData();
+var faker = app.Services.GetRequiredService<IDataFaker>();
+faker.GenerateData(dataFakerConfiguration, apiKeys);
 
 app.UseDeveloperExceptionPage();
 

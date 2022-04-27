@@ -3,12 +3,11 @@ using FluentResults;
 
 namespace BoligDataAPI.Features.Lejer;
 
-public class LejerService
+public class LejerService : ILejerService
 {
   private readonly DataContext _context;
   private readonly string _apiKey;
-
-  public delegate LejerService Factory(string apiKey);
+  
   public LejerService(DataContext context, string apiKey)
   {
     _context = context;
@@ -52,7 +51,8 @@ public class LejerService
       : Result.Try(() =>
       {
         _context.Lejere.Remove(result.Value);
-        _context.Lejere.Add(data with { LejemaalId = result.Value.LejemaalId });
+        data = data with { LejemaalId = result.Value.LejemaalId };
+        _context.Lejere.Add(data);
         _context.SaveChanges();
         return data;
       });

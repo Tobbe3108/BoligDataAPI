@@ -12,9 +12,9 @@ namespace BoligDataAPI.Features.Lejemaal;
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 public class LejemaalController : ControllerBase
 {
-  private readonly LejemaalService.Factory _lejemaalServiceFactory;
+  private readonly ILejemaalService.Factory _lejemaalServiceFactory;
 
-  public LejemaalController(LejemaalService.Factory lejemaalServiceFactory)
+  public LejemaalController(ILejemaalService.Factory lejemaalServiceFactory)
   {
     _lejemaalServiceFactory = lejemaalServiceFactory;
   }

@@ -3,13 +3,11 @@ using FluentResults;
 
 namespace BoligDataAPI.Features.Ejendom;
 
-public class EjendomService
+public class EjendomService : IEjendomService
 {
   private readonly DataContext _context;
   private readonly string _apiKey;
-
-  public delegate EjendomService Factory(string apiKey);
-
+  
   public EjendomService(DataContext context, string apiKey)
   {
     _context = context;

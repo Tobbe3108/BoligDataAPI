@@ -2,26 +2,22 @@
 
 namespace BoligDataAPI.Features.Data;
 
-public class DataFaker
+public class DataFaker : IDataFaker
 {
-  private readonly DataFakerConfiguration _dataFakerConfiguration;
-  private readonly IEnumerable<string> _apiKeys;
   private readonly DataContext _context;
 
-  public DataFaker(DataFakerConfiguration dataFakerConfiguration,
-    IEnumerable<string> apiKeys, DataContext context)
+  public DataFaker(DataContext context)
   {
-    _dataFakerConfiguration = dataFakerConfiguration;
-    _apiKeys = apiKeys;
     _context = context;
     RimuTec.Faker.Config.Locale = "da-DK";
   }
 
-  public void GenerateData()
+  public void GenerateData(DataFakerConfiguration dataFakerConfiguration,
+    IEnumerable<string> apiKeys)
   {
-    foreach (var apiKey in _apiKeys)
+    foreach (var apiKey in apiKeys)
     {
-      for (var i = 0; i < _dataFakerConfiguration.NrOfEjendomme; i++)
+      for (var i = 0; i < dataFakerConfiguration.NrOfEjendomme; i++)
       {
         var ejendom = new Ejendom.Ejendom(RimuTec.Faker.Address.StreetName(),
           RimuTec.Faker.Address.BuildingNumber(),
@@ -30,7 +26,7 @@ public class DataFaker
           RimuTec.Faker.Address.State(),
           RimuTec.Faker.Address.CountryCode());
 
-        for (var j = 0; j < GetRandomFromRange(_dataFakerConfiguration.RangeOfLejemaalPrEjendom); j++)
+        for (var j = 0; j < GetRandomFromRange(dataFakerConfiguration.RangeOfLejemaalPrEjendom); j++)
         {
           var lejemaal = new Lejemaal.Lejemaal(ejendom.Id,
             ejendom.StreetName,
@@ -42,7 +38,7 @@ public class DataFaker
             ejendom.CountryCode,
             Random.Shared.Next(100) < 10 /*10% chance of being bookable*/);
 
-          var lejerePrLejemaal = GetRandomFromRange(_dataFakerConfiguration.RangeOfLejerePrLejemaal);
+          var lejerePrLejemaal = GetRandomFromRange(dataFakerConfiguration.RangeOfLejerePrLejemaal);
           var lastDate = RimuTec.Faker.Date.Backward(3650);
           for (var h = 0; h < lejerePrLejemaal; h++)
           {

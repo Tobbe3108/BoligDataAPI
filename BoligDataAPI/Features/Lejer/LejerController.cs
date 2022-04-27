@@ -12,9 +12,9 @@ namespace BoligDataAPI.Features.Lejer;
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 public class LejerController : ControllerBase
 {
-  private readonly LejerService.Factory _lejerServiceFactory;
+  private readonly ILejerService.Factory _lejerServiceFactory;
 
-  public LejerController(LejerService.Factory lejerServiceFactory)
+  public LejerController(ILejerService.Factory lejerServiceFactory)
   {
     _lejerServiceFactory = lejerServiceFactory;
   }

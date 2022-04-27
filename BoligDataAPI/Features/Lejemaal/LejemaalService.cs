@@ -3,12 +3,10 @@ using FluentResults;
 
 namespace BoligDataAPI.Features.Lejemaal;
 
-public class LejemaalService
+public class LejemaalService : ILejemaalService
 {
   private readonly DataContext _context;
   private readonly string _apiKey;
-
-  public delegate LejemaalService Factory(string apiKey);
 
   public LejemaalService(DataContext dataContext, string apiKey)
   {

@@ -12,9 +12,9 @@ namespace BoligDataAPI.Features.Ejendom;
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 public class EjendomController : ControllerBase
 {
-  private readonly EjendomService.Factory _ejendomServiceFactory;
+  private readonly IEjendomService.Factory _ejendomServiceFactory;
 
-  public EjendomController(EjendomService.Factory ejendomServiceFactory)
+  public EjendomController(IEjendomService.Factory ejendomServiceFactory)
   {
     _ejendomServiceFactory = ejendomServiceFactory;
   }
