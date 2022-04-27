@@ -18,8 +18,16 @@
 - [Tech Stack](#space_invader-tech-stack)
   * [Global](#earth_africa-global)
   * [Server](#computer-server)
-  * [Global](#earth_africa-global)
+  * [Clients](#iphone-clients)
 - [Getting Started](#toolbox-getting-started)
+  * [Prerequisites](#bangbang-prerequisites)
+  * [Run Locally](#running-run-locally)
+  * [Define and register](#building_construction-define-and-register)
+    * [Refit](#refit)
+    * [Flurl](#flurl)
+    * [TypedHttpClient](#typedhttpclient)
+  * [Usage](#eyes-usage)
+- [Contact](#handshake-contact)
 
 
 
@@ -80,7 +88,7 @@ Start the server
 
 
 <!-- Usage -->
-#### :building_construction: Register
+#### :building_construction: Define and register
 
 
 #### <a href="https://github.com/Tobbe3108/BoligDataAPI/tree/master/Sample/Refit">Refit</a>
@@ -182,11 +190,5 @@ await _api.ListEjendomme()
 
 <!-- Contact -->
 ## :handshake: Contact
-[Tobias Lauritzen](https://about.me/tobiaslauritzen) - tla@unik.dk eller TobiasLauritzen@protonmail.com
-
-
-
-<!-- Acknowledgments -->
-## :gem: Shout out to
- - [Awesome README](https://github.com/matiassingers/awesome-readme)
- - [Emoji Cheat Sheet](https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md#travel--places)
+[Tobias Lauritzen](https://about.me/tobiaslauritzen) - tla@unik.dk
+Kasper A. Thorsen - kat@unik.dk
