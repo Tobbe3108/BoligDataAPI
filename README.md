@@ -15,11 +15,11 @@
 
 <!-- Table of Contents -->
 ## :notebook_with_decorative_cover: Table of Contents
-- [About the Project](#star2-about-the-project)
-  * [Tech Stack](#space_invader-tech-stack)
-  * [Features](#dart-features)
-  * [Color Reference](#art-color-reference)
-  * [Environment Variables](#key-environment-variables)
+- [Tech Stack](#space_invader-tech-stack)
+  * [Global](#earth_africa-global)
+  * [Server](#computer-server)
+  * [Global](#earth_africa-global)
+- [Getting Started](#toolbox-getting-started)
 
 
 
@@ -40,9 +40,8 @@
   <li><a href="https://github.com/altmann/FluentResults">FluentResults</a></li>
   <li><a href="https://docs.microsoft.com/en-us/ef/core/">Entity Framework Core</a></li>
   <li><a href="https://github.com/RimuTec/Faker">RimuTec.Faker</a></li>
-</ul
+</ul>
 
-  
 #### :iphone: Clients
 <ul>
   <li><a href="https://reactiveui.github.io/refit/">Refit</a></li>
