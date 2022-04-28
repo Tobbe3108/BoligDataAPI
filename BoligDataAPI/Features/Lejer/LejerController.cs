@@ -1,4 +1,6 @@
 ﻿using BoligDataAPI.Features.Header;
+using BoligDataAPI.Features.Results;
+using FluentResults;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,10 +8,6 @@ namespace BoligDataAPI.Features.Lejer;
 
 [ApiController]
 [Route("[controller]")]
-[Produces("application/json")]
-[ProducesResponseType(StatusCodes.Status200OK)]
-[ProducesResponseType(StatusCodes.Status409Conflict)]
-[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 public class LejerController : ControllerBase
 {
   private readonly ILejerService.Factory _lejerServiceFactory;
@@ -20,52 +18,82 @@ public class LejerController : ControllerBase
   }
 
   [HttpGet("/Lejer/{id:guid}")]
-  public ActionResult<Response?> Get(Guid id)
+  [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
+  [ProducesResponseType(typeof(IEnumerable<IReason>), StatusCodes.Status404NotFound)]
+  [ProducesResponseType(typeof(IEnumerable<IReason>), StatusCodes.Status409Conflict)]
+  public IActionResult Get(Guid id)
   {
     var apiKey = Request.Headers.ExtractApiKey();
     var result = _lejerServiceFactory(apiKey).GetById(id);
+
     return result.IsFailed
-      ? Conflict(result.ToString())
+      ? result.HasError<NotFoundError>()
+        ? NotFound(result.Reasons)
+        : Conflict(result.Reasons)
       : Ok(result.Value.Adapt<Response>());
   }
 
   [HttpGet("/Lejemaal/{id:guid}/Lejer")]
-  public ActionResult<IEnumerable<Response>> GetByLejemaalId(Guid id)
+  [ProducesResponseType(typeof(IEnumerable<Response>), StatusCodes.Status200OK)]
+  [ProducesResponseType(typeof(IEnumerable<IReason>), StatusCodes.Status404NotFound)]
+  [ProducesResponseType(typeof(IEnumerable<IReason>), StatusCodes.Status409Conflict)]
+  public IActionResult GetByLejemaalId(Guid id)
   {
     var apiKey = Request.Headers.ExtractApiKey();
     var result = _lejerServiceFactory(apiKey).GetByLejemaalId(id);
+
     return result.IsFailed
-      ? Conflict(result.ToString())
+      ? result.HasError<NotFoundError>()
+        ? NotFound(result.Reasons)
+        : Conflict(result.Reasons)
       : Ok(result.Value.Adapt<IEnumerable<Response>>());
   }
 
   [HttpPost("/Lejer")]
-  public ActionResult<Response> Create([FromBody] CreateRequest data)
+  [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
+  [ProducesResponseType(typeof(IEnumerable<IReason>), StatusCodes.Status404NotFound)]
+  [ProducesResponseType(typeof(IEnumerable<IReason>), StatusCodes.Status409Conflict)]
+  public IActionResult Create([FromBody] CreateRequest data)
   {
     var apiKey = Request.Headers.ExtractApiKey();
     var result = _lejerServiceFactory(apiKey).Create(data.Adapt<Lejer>() with { ApiKey = apiKey });
+
     return result.IsFailed
-      ? Conflict(result.ToString())
+      ? result.HasError<NotFoundError>()
+        ? NotFound(result.Reasons)
+        : Conflict(result.Reasons)
       : Ok(result.Value.Adapt<Response>());
   }
 
   [HttpPut("/Lejer/{id:guid}")]
-  public ActionResult<Response> Update(Guid id, [FromBody] UpdateRequest data)
+  [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
+  [ProducesResponseType(typeof(IEnumerable<IReason>), StatusCodes.Status404NotFound)]
+  [ProducesResponseType(typeof(IEnumerable<IReason>), StatusCodes.Status409Conflict)]
+  public IActionResult Update(Guid id, [FromBody] UpdateRequest data)
   {
     var apiKey = Request.Headers.ExtractApiKey();
     var result = _lejerServiceFactory(apiKey).Update(data.Adapt<Lejer>() with { Id = id, ApiKey = apiKey });
+    
     return result.IsFailed
-      ? Conflict(result.ToString())
+      ? result.HasError<NotFoundError>()
+        ? NotFound(result.Reasons)
+        : Conflict(result.Reasons)
       : Ok(result.Value.Adapt<Response>());
   }
 
   [HttpDelete("/Lejer/{id:guid}")]
-  public ActionResult Delete(Guid id)
+  [ProducesResponseType( StatusCodes.Status204NoContent)]
+  [ProducesResponseType(typeof(IEnumerable<IReason>), StatusCodes.Status404NotFound)]
+  [ProducesResponseType(typeof(IEnumerable<IReason>), StatusCodes.Status409Conflict)]
+  public IActionResult Delete(Guid id)
   {
     var apiKey = Request.Headers.ExtractApiKey();
     var result = _lejerServiceFactory(apiKey).Delete(id);
+    
     return result.IsFailed
-      ? Conflict(result.ToString())
-      : Ok();
+      ? result.HasError<NotFoundError>()
+        ? NotFound(result.Reasons)
+        : Conflict(result.Reasons)
+      : NoContent();
   }
 }

@@ -1,4 +1,6 @@
 ﻿using BoligDataAPI.Features.Header;
+using BoligDataAPI.Features.Results;
+using FluentResults;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,10 +8,6 @@ namespace BoligDataAPI.Features.Lejemaal;
 
 [ApiController]
 [Route("[controller]")]
-[Produces("application/json")]
-[ProducesResponseType(StatusCodes.Status200OK)]
-[ProducesResponseType(StatusCodes.Status409Conflict)]
-[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 public class LejemaalController : ControllerBase
 {
   private readonly ILejemaalService.Factory _lejemaalServiceFactory;
@@ -20,22 +18,34 @@ public class LejemaalController : ControllerBase
   }
 
   [HttpGet("/Lejemaal/{id:guid}")]
-  public ActionResult<Response?> Get(Guid id)
+  [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
+  [ProducesResponseType(typeof(IEnumerable<IReason>), StatusCodes.Status404NotFound)]
+  [ProducesResponseType(typeof(IEnumerable<IReason>), StatusCodes.Status409Conflict)]
+  public IActionResult Get(Guid id)
   {
     var apiKey = Request.Headers.ExtractApiKey();
     var result = _lejemaalServiceFactory(apiKey).GetById(id);
+
     return result.IsFailed
-      ? Conflict(result.ToString())
+      ? result.HasError<NotFoundError>()
+        ? NotFound(result.Reasons)
+        : Conflict(result.Reasons)
       : Ok(result.Value.Adapt<Response>());
   }
 
   [HttpGet("/Ejendom/{id:guid}/Lejemaal")]
-  public ActionResult<IEnumerable<Response>> GetByEjendomId(Guid id)
+  [ProducesResponseType(typeof(IEnumerable<Response>), StatusCodes.Status200OK)]
+  [ProducesResponseType(typeof(IEnumerable<IReason>), StatusCodes.Status404NotFound)]
+  [ProducesResponseType(typeof(IEnumerable<IReason>), StatusCodes.Status409Conflict)]
+  public IActionResult GetByEjendomId(Guid id)
   {
     var apiKey = Request.Headers.ExtractApiKey();
     var result = _lejemaalServiceFactory(apiKey).GetByEjendomId(id);
+
     return result.IsFailed
-      ? Conflict(result.ToString())
+      ? result.HasError<NotFoundError>()
+        ? NotFound(result.Reasons)
+        : Conflict(result.Reasons)
       : Ok(result.Value.Adapt<IEnumerable<Response>>());
   }
 }
