@@ -190,5 +190,4 @@ await _api.ListEjendomme()
 
 <!-- Contact -->
 ## :handshake: Contact
-[Tobias Lauritzen](https://about.me/tobiaslauritzen) - tla@unik.dk  
-Kasper A. Thorsen - kat@unik.dk
+Made with :coffee: by [Tobias Lauritzen](https://about.me/tobiaslauritzen)
