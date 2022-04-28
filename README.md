@@ -8,8 +8,8 @@
     <br />
     <a href="https://boligdataapi.azurewebsites.net/swagger/index.html"><strong>Explore the API</strong></a>
   </p>
+  <br />
 </div>
-<br />
 
 
 
@@ -188,6 +188,12 @@ await _api.ListEjendomme()
 
 
 
-<!-- Contact -->
-## :handshake: Contact
-Made with :coffee: by [Tobias Lauritzen](https://about.me/tobiaslauritzen)
+<!-- Unintended Features -->
+## :warning: Unintended "features"?
+Feel free to submit a pull request or create a new [Issue](https://github.com/Tobbe3108/BoligDataAPI/issues)
+
+<!-- Make by -->
+<div align="center">
+  <br />
+  <h5>Made with :coffee: by <a href="https://about.me/tobiaslauritzen">Tobias Lauritzen</a></h5>
+</div>
